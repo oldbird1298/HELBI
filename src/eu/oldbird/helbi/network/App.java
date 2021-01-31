@@ -54,7 +54,7 @@ public class App {
 		
 		Long statTime = System.nanoTime();
 		
-		Inventory inv = new IPScanner("192.168.1.7", 26)
+		Inventory inv = new IPScanner("192.168.1.7", 24)
 				.startupOp()
 				.networkScanOp()
 				.discoveryOp()
