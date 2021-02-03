@@ -36,7 +36,7 @@ public class InventoryCreatorTask extends RecursiveTask<Inventory> {
 			InventoryCreatorTask task1 = new InventoryCreatorTask(
 					inetAddresses.subList(0, (inetAddresses.size() - 1) / 2));
 			InventoryCreatorTask task2 = new InventoryCreatorTask(
-					inetAddresses.subList((inetAddresses.size() / 2), inetAddresses.size() - 1));
+					inetAddresses.subList(((inetAddresses.size() - 1) / 2), inetAddresses.size()));
 			invokeAll(task1, task2);
 
 			try {
@@ -60,9 +60,9 @@ public class InventoryCreatorTask extends RecursiveTask<Inventory> {
 
 	private Inventory createNodesMultiThread(final List<InetAddress> inetAddresses) {
 
-		this.executor = (ThreadPoolExecutor)Executors.newFixedThreadPool(hosts);
+		this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(hosts);
 		List<Future<Node>> futures = new ArrayList<>();
-		
+
 		for (InetAddress addr : inetAddresses) {
 			System.out.printf("Creating/Inserting host to inventory: %s\n", addr.getHostAddress());
 			Future<Node> future = this.executor.submit(() -> {
@@ -71,7 +71,7 @@ public class InventoryCreatorTask extends RecursiveTask<Inventory> {
 			});
 			futures.add(future);
 		}
-		
+
 		do {
 			System.out.printf("Number of Completed Tasks: %d\n", this.executor.getCompletedTaskCount());
 //			for(Future<Node> future: futures) {
@@ -83,7 +83,7 @@ public class InventoryCreatorTask extends RecursiveTask<Inventory> {
 				e.printStackTrace();
 			}
 		} while (executor.getCompletedTaskCount() < futures.size());
-		
+
 		for (Future<Node> future : futures) {
 			try {
 				list.addNode(future.get());
@@ -92,7 +92,7 @@ public class InventoryCreatorTask extends RecursiveTask<Inventory> {
 				e.printStackTrace();
 			}
 		}
-		
+
 		executor.shutdown();
 		return list;
 

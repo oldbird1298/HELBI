@@ -57,7 +57,6 @@ public class IPScanner implements NodeListBuilder {
 			InetAddress network = InetAddress.getByAddress(net);
 			this.addresses = IPScanner.findAllAddresses(network, this.mask);
 			System.out.println(this.addresses.size());
-			//TODO replace this fault tollerance code
 			InventoryCreatorTask task = new InventoryCreatorTask(addresses);
 			this.commonPool.execute(task);
 			
@@ -78,15 +77,9 @@ public class IPScanner implements NodeListBuilder {
 			} while(!task.isDone());
 			
 			this.nodes = task.get();
-			commonPool.shutdown();
+//			commonPool.shutdown();
 			
-//			this.addresses.forEach((inet) -> {
-//				System.out.println("Creating new node " + inet.getHostAddress());
-//				Node node = new SimpleNode(inet.getHostName(), inet.getHostAddress());
-//				this.nodes.addNode(node);
-//			});
 		} catch (UnknownHostException | ExecutionException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 //			System.out.println(e.getMessage());
 		}
@@ -95,31 +88,33 @@ public class IPScanner implements NodeListBuilder {
 
 	@Override
 	public NodeListBuilder networkScanOp() {
-		// TODO Auto-generated method stub
 		System.out.println("Start comprehensive scan of " + this.hosts);
-//		Long startTime = System.nanoTime();
+		System.out.println("Common pool is closed: " + this.commonPool.isShutdown());
+		PingTesterTask task = new PingTesterTask(this.nodes, 0, this.nodes.getSize());
+		this.commonPool.execute(task);
+		
+		do {
+			System.out.printf("***********************************************\n");
+			System.out.printf("Active Threads: %d\n", commonPool.getActiveThreadCount());
+			System.out.printf("Task count: %d\n", commonPool.getQueuedTaskCount());
+			System.out.printf("Steal count: %d\n", commonPool.getStealCount());
+			System.out.printf("***********************************************\n");
+			try {
+				TimeUnit.SECONDS.sleep(1);
+				
+			}catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while(!task.isDone());
+		this.commonPool.shutdown();
+		
 
-//		this.nodes.getNodes().forEach(node -> {
-//			executor.submit(() -> {
-//
-//				if (node.isReachable()) {
-//					((SimpleNode) node).setOnline(true);
-//				}
-//
-//			});
-//
-//		});
-//		this.executor.shutdown();
-//		Long endTime = System.nanoTime();
-//		System.out.println("Scanning " + this.hosts + " in " + ((endTime - startTime) / 1000000000.0) + "s");
 		return this;
 	}
 
 	@Override
 	public NodeListBuilder discoveryOp() {
 		// TODO Auto-generated method stub
-		System.out.println("Printing");
-		this.nodes.printInventory();
 		return this;
 	}
 

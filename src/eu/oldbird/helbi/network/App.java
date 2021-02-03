@@ -30,23 +30,23 @@ public class App {
 //			e.printStackTrace();
 //		}
 //		
-		Inventory list = new Inventory();
-		List<Node> nodes = new ArrayList<>();
-		list.addNode(new SimpleNode("Oldbird-PC", "192.168.1.2"));
-		list.addNode(new SimpleNode("Oldbird-Laptop", "192.168.1.3"));
-		list.addNode(new SimpleNode("DockerStation", "192.168.1.4"));
-		list.addNode(new SimpleNode("Unknown-1", "192.168.1.43"));
-		
-		list.printInventory();
-		list.getNodes().forEach(node -> {
-			if (node.isReachable()) {
-				System.out.println(node.getInetAddress().getHostName() +  " is online");
-				((SimpleNode)node).setOnline(true);
-				
-			}else {
-				System.out.println(node.getInetAddress().getHostName() + " is not online");
-			}
-		});
+//		Inventory list = new Inventory();
+//		List<Node> nodes = new ArrayList<>();
+//		list.addNode(new SimpleNode("Oldbird-PC", "192.168.1.2"));
+//		list.addNode(new SimpleNode("Oldbird-Laptop", "192.168.1.3"));
+//		list.addNode(new SimpleNode("DockerStation", "192.168.1.4"));
+//		list.addNode(new SimpleNode("Unknown-1", "192.168.1.43"));
+//		
+//		list.printInventory();
+//		list.getNodes().forEach(node -> {
+//			if (node.isReachable()) {
+//				System.out.println(node.getInetAddress().getHostName() +  " is online");
+//				((SimpleNode)node).setOnline(true);
+//				
+//			}else {
+//				System.out.println(node.getInetAddress().getHostName() + " is not online");
+//			}
+//		});
 		
 //		for(;;) {
 //			System.out.println("Echo");
@@ -62,8 +62,8 @@ public class App {
 		inv.printInventory();
 		System.out.println(inv.getSize());
 		Long endTime = System.nanoTime();
-		System.out.println("Number of hosts for netmask /" + 26 +  " " + IPScanner.calculateHosts(26));
-		System.out.println("IPScanner took " + ((endTime - statTime) / 1000000000.0) + " s");
+		System.out.println("Number of hosts for netmask /" + 24 +  " " + IPScanner.calculateHosts(24));
+		System.out.println("IPScanner took " + ((endTime - statTime) / 1000000000.0) + " s for scanning " + inv.getSize() + " hosts");
 				
 	}
 	

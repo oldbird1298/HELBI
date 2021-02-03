@@ -45,6 +45,10 @@ public class Inventory {
 		return this.nodes.add(node);
 	}
 
+	public synchronized Node getNode(int index) {
+		return this.nodes.get(index);
+	}
+
 	public int getSize() {
 		return this.nodes.size();
 	}
