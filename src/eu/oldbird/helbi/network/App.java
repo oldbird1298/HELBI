@@ -60,6 +60,8 @@ public class App {
 				.discoveryOp()
 				.getNodes();
 		inv.printInventory();
+		List<Node> onlineList = inv.getOnlineNode();
+		onlineList.forEach(node -> System.out.println(node));
 		System.out.println(inv.getSize());
 		Long endTime = System.nanoTime();
 		System.out.println("Number of hosts for netmask /" + 24 +  " " + IPScanner.calculateHosts(24));

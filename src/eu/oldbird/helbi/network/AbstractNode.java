@@ -112,7 +112,7 @@ public abstract class AbstractNode implements Node {
 	public abstract boolean isReachable();
 
 	public String toString() {
-		return String.format("Node id:%s\nNode name:%s\nOnline: %s\n", this.id, this.name, this.online);
+		return String.format("Node id:%s\nNode name:%s\nNode IP:%s\nOnline: %s\n", this.id, this.name, this.address.getHostAddress() ,this.online);
 	}
 
 }

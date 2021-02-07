@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class represents an inventory to handle the network nodes. It provides
@@ -48,6 +49,17 @@ public class Inventory {
 	public synchronized Node getNode(int index) {
 		return this.nodes.get(index);
 	}
+	
+	public List<Node> getOnlineNode() {
+		
+		List<Node> onlinesHosts =  this.nodes
+				.parallelStream()
+				.filter(n -> n.isOnline())
+				.collect(Collectors.toList());
+		return onlinesHosts;
+	}
+	
+	
 
 	public int getSize() {
 		return this.nodes.size();
